@@ -1,0 +1,121 @@
+from tkinter import *
+from PIL import ImageTk, Image
+
+def init_cal():
+    t = Tk()
+    t.title("Basic Calculator")
+    t.iconbitmap("D:/Rubal/Calc-icon.ico")
+    t.geometry("300x430")
+
+    # Load background image
+    bg = ImageTk.PhotoImage(file="D:/Rubal/300x430_background.png")
+    bg_label = Label(t, image=bg)
+    bg_label.place(x=0, y=0)
+
+    # Entry widget
+    e = Entry(t, width=30, borderwidth=8, font=("Times", 10))
+    e.grid(row=0, column=0, pady=20, padx=30, columnspan=3)
+
+    # Load button images
+    images = {
+        "1": ImageTk.PhotoImage(Image.open("D:/Rubal/1.png")),
+        "2": ImageTk.PhotoImage(Image.open("D:/Rubal/2.png")),
+        "3": ImageTk.PhotoImage(Image.open("D:/Rubal/3.png")),
+        "4": ImageTk.PhotoImage(Image.open("D:/Rubal/4.png")),
+        "5": ImageTk.PhotoImage(Image.open("D:/Rubal/5.png")),
+        "6": ImageTk.PhotoImage(Image.open("D:/Rubal/6.png")),
+        "7": ImageTk.PhotoImage(Image.open("D:/Rubal/7.png")),
+        "8": ImageTk.PhotoImage(Image.open("D:/Rubal/8.png")),
+        "9": ImageTk.PhotoImage(Image.open("D:/Rubal/9.png")),
+        "0": ImageTk.PhotoImage(Image.open("D:/Rubal/10.png")),
+        "+": ImageTk.PhotoImage(Image.open("D:/Rubal/11.png")),
+        "-": ImageTk.PhotoImage(Image.open("D:/Rubal/12.png")),
+        "*": ImageTk.PhotoImage(Image.open("D:/Rubal/13.png")),
+        "/": ImageTk.PhotoImage(Image.open("D:/Rubal/14.png")),
+        "=": ImageTk.PhotoImage(Image.open("D:/Rubal/15.png")),
+        "C": ImageTk.PhotoImage(Image.open("D:/Rubal/16.png")),
+    }
+
+    # Define button actions
+    def btn_click(number):
+        current = e.get()
+        e.delete(0, END)
+        e.insert(0, str(current) + str(number))
+
+    def btn_add():
+        num1 = e.get()
+        global n1, math
+        math = "addition"
+        n1 = int(num1)
+        e.delete(0, END)
+
+    def btn_sub():
+        num1 = e.get()
+        global n1, math
+        math = "subtraction"
+        n1 = int(num1)
+        e.delete(0, END)
+
+    def btn_mul():
+        num1 = e.get()
+        global n1, math
+        math = "multiplication"
+        n1 = int(num1)
+        e.delete(0, END)
+
+    def btn_div():
+        num1 = e.get()
+        global n1, math
+        math = "division"
+        n1 = int(num1)
+        e.delete(0, END)
+
+    def btn_equals():
+        num2 = e.get()
+        e.delete(0, END)
+        if math == "addition":
+            e.insert(0, n1 + int(num2))
+        elif math == "subtraction":
+            e.insert(0, n1 - int(num2))
+        elif math == "multiplication":
+            e.insert(0, n1 * int(num2))
+        elif math == "division":
+            if int(num2) != 0:
+                e.insert(0, n1 / int(num2))
+            else:
+                e.insert(0, "Error")
+
+    def btn_clear():
+        e.delete(0, END)
+
+    # Define buttons and their layout
+    buttons = {
+        "1": (1, 0, lambda: btn_click("1")),
+        "2": (1, 1, lambda: btn_click("2")),
+        "3": (1, 2, lambda: btn_click("3")),
+        "4": (2, 0, lambda: btn_click("4")),
+        "5": (2, 1, lambda: btn_click("5")),
+        "6": (2, 2, lambda: btn_click("6")),
+        "7": (3, 0, lambda: btn_click("7")),
+        "8": (3, 1, lambda: btn_click("8")),
+        "9": (3, 2, lambda: btn_click("9")),
+        "0": (4, 1, lambda: btn_click("0")),
+        "+": (4, 2, btn_add),
+        "-": (4, 0, btn_sub),
+        "*": (5, 1, btn_mul),
+        "/": (5, 0, btn_div),
+        "=": (5, 2, btn_equals),
+        "C": (6, 1, btn_clear),
+    }
+
+    for btn, (row, col, cmd) in buttons.items():
+        Button(t, border="3", image=images[btn], command=cmd).grid(row=row, column=col)
+
+    # Keep references to images to prevent garbage collection
+    t.images = images
+
+    # Start the Tkinter event loop
+    t.mainloop()
+
+# Initiate the calculator
+init_cal()
